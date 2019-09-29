@@ -58,14 +58,15 @@ def hover_preview_callback():
                               r"(?:[^/\"'\s]+/)*"                       # path
                               r"([^\"'/\s]+?\.(?:%s))" % formats_ored)  # name
 
-    IMAGE_FILE_RE = re.compile(r"(?:"                 # drive
-                                    r"\w:\\|"         # Windows (e.g C:\)
+    IMAGE_FILE_RE = re.compile(r"(?P<path>("                 # drive
+                                    r"\w:(\\\\|/)|"         # Windows (e.g C:\)
                                     r"\\\\|"          # Linux (\\)
-                                    r"\.{0,2}[\\/]"   # Mac OS and/or relative
+                                    r"\.{1,2}(\\\\|/)|"   # Mac OS and/or relative
+									r"\w+(\\\\|/)"
                                r")"
-                               r"(?:[-.@\w]+?[\\/])*"     # body
-                               r"[-.@\w]+?"               # name
-                               r"\.(?:%s)" % formats_ored   # extension
+                               r"([-\.@\w]+?(\\\\|/))*"     # body
+                               r"[-\.@\w]+?"               # name
+                               r"\.(%s))" % formats_ored   # extension
                                )
     IMAGE_FILE_NAME_RE = re.compile(r"[-.@\w]+"               # name
                                     r"\.(?:%s)" % formats_ored  # extension
